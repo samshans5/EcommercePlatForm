@@ -41,11 +41,12 @@ public class ProductController
 
     /*
     * POST /products: Create a product
+    * for testing purpose we changed return type from void to product
     * */
     @PostMapping("/products")
-    public void createProduct(CreateProductDto createProductDto)
+    public Product createProduct(@RequestBody CreateProductDto createProductDto)
     {
-        productService.CreateProduct(createProductDto);
+        return productService.CreateProduct(createProductDto);
     }
 
 

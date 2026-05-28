@@ -6,6 +6,7 @@ import com.scaler.ecommerceplatform.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,9 +18,23 @@ public class FakeStoreProductService implements ProductService
         this.restTemplate = restTemplate;
     }
 
+    /*
+     * This method is to call third party API
+     * url: 'https://fakestoreapi.com/products'
+     */
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        // Creating  a list, which will be returned by the method
+        List<Product> products = new ArrayList<>();
+
+        // Iterate over the array and convert individual FakeStoreDto to product, then add the product to list
+        FakeStoreProductDto[] fakeStoreProductDtoArray = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+
+        for(FakeStoreProductDto fakeStoreProductDto: fakeStoreProductDtoArray){
+            Product product = fakeStoreProductDto.toProduct();
+            products.add(product);
+        }
+        return products;
     }
 
     /*
@@ -33,7 +48,16 @@ public class FakeStoreProductService implements ProductService
     }
 
     @Override
-    public void CreateProduct(CreateProductDto createProductDto) {
+    public Product CreateProduct(CreateProductDto createProductDto)
+    {
+        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+        fakeStoreProductDto.setTitle(createProductDto.getTitle());
+        fakeStoreProductDto.setDescription(createProductDto.getDescription());
+        fakeStoreProductDto.setPrice(createProductDto.getPrice());
+        fakeStoreProductDto.setImage(createProductDto.getImage());
+        fakeStoreProductDto.setCategory(createProductDto.getCategory());
 
+        FakeStoreProductDto fakeStoreProductDto1 = restTemplate.postForObject("https://fakestoreapi.com/products", fakeStoreProductDto, FakeStoreProductDto.class);
+        return fakeStoreProductDto1.toProduct();
     }
 }
