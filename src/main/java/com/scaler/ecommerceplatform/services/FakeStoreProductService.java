@@ -2,6 +2,7 @@ package com.scaler.ecommerceplatform.services;
 
 import com.scaler.ecommerceplatform.dtos.CreateProductDto;
 import com.scaler.ecommerceplatform.dtos.FakeStoreProductDto;
+import com.scaler.ecommerceplatform.exceptions.ProductNotFoundException;
 import com.scaler.ecommerceplatform.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -48,16 +49,27 @@ public class FakeStoreProductService implements ProductService
     }
 
     @Override
-    public Product CreateProduct(CreateProductDto createProductDto)
-    {
-        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
-        fakeStoreProductDto.setTitle(createProductDto.getTitle());
-        fakeStoreProductDto.setDescription(createProductDto.getDescription());
-        fakeStoreProductDto.setPrice(createProductDto.getPrice());
-        fakeStoreProductDto.setImage(createProductDto.getImage());
-        fakeStoreProductDto.setCategory(createProductDto.getCategory());
-
-        FakeStoreProductDto fakeStoreProductDto1 = restTemplate.postForObject("https://fakestoreapi.com/products", fakeStoreProductDto, FakeStoreProductDto.class);
-        return fakeStoreProductDto1.toProduct();
+    public Product CreateProduct(String title, String description, String image, double price, String category) {
+        return null;
     }
+
+    @Override
+    public List<Product> getAllProductsByCategory(String category) throws ProductNotFoundException {
+        return List.of();
+    }
+
+    //    @Override
+//    public Product CreateProduct(CreateProductDto createProductDto)
+//    {
+//        FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
+//        fakeStoreProductDto.setTitle(createProductDto.getTitle());
+//        fakeStoreProductDto.setDescription(createProductDto.getDescription());
+//        fakeStoreProductDto.setPrice(createProductDto.getPrice());
+//        fakeStoreProductDto.setImage(createProductDto.getImage());
+//        fakeStoreProductDto.setCategory(createProductDto.getCategory());
+//
+//        FakeStoreProductDto fakeStoreProductDto1 = restTemplate.postForObject("https://fakestoreapi.com/products", fakeStoreProductDto, FakeStoreProductDto.class);
+//        return fakeStoreProductDto1.toProduct();
+//    }
+
 }
